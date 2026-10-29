@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 3: Introduction to Risk Management - Premium Academic Quizzes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F4F7F6; --surface: #FFFFFF; --primary: #0F172A; --secondary: #334155;
+            --accent: #C5A059; --accent-light: rgba(197, 160, 89, 0.1); --text-main: #1E293B;
+            --text-muted: #64748B; --success: #059669; --success-bg: rgba(5, 150, 105, 0.1);
+            --error: #DC2626; --error-bg: rgba(220, 38, 38, 0.1); --border: #E2E8F0;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            --radius: 16px; --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; font-family: 'Inter', sans-serif; transition: var(--transition); }
+        body[dir="rtl"] { font-family: 'Cairo', sans-serif; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, #1E293B 100%); color: white; padding: 2.5rem 0; position: relative; overflow: hidden; box-shadow: var(--shadow-lg); }
+        header::before { content: ''; position: absolute; top: -50%; right: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(197, 160, 89, 0.15) 0%, transparent 70%); border-radius: 50%; }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+        .brand { display: flex; flex-direction: column; text-align: center; }
+        .brand h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 4px; }
+        body[dir="rtl"] .brand h1 { font-family: 'Cairo', sans-serif; font-size: 1.8rem; }
+        .brand span { color: var(--accent); font-size: 0.9rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
+        .fab-translate { position: fixed; bottom: 30px; right: 30px; z-index: 1000; background: linear-gradient(135deg, var(--primary) 0%, #1E293B 100%); color: var(--accent); border: 2px solid var(--accent); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.2), 0 0 15px rgba(197, 160, 89, 0.2); transition: var(--transition); overflow: hidden; }
+        [dir="rtl"] .fab-translate { right: auto; left: 30px; }
+        .fab-translate:hover { transform: scale(1.1); box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 25px rgba(197, 160, 89, 0.4); background: var(--accent); color: var(--primary); }
+        .fab-icon { font-size: 1.5rem; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .fab-translate.animate .fab-icon { transform: rotate(360deg) scale(1.2); }
+        .fab-tooltip { position: absolute; right: 75px; background: var(--primary); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s; transform: translateX(10px); }
+        [dir="rtl"] .fab-tooltip { right: auto; left: 75px; transform: translateX(-10px); }
+        .fab-translate:hover .fab-tooltip { opacity: 1; transform: translateX(0); }
+        .tabs-wrapper { margin-top: -30px; margin-bottom: 40px; position: relative; z-index: 2; }
+        .tabs { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .tab-btn { padding: 14px 40px; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: var(--transition); box-shadow: var(--shadow-sm); }
+        .tab-btn:hover { color: var(--primary); border-color: var(--accent); }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2); }
+        .quiz-container { background: var(--surface); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 60px; border: 1px solid var(--border); animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .quiz-title { text-align: center; color: var(--primary); margin-bottom: 40px; font-family: 'Playfair Display', serif; font-size: 1.6rem; position: relative; padding-bottom: 15px; }
+        body[dir="rtl"] .quiz-title { font-family: 'Cairo', sans-serif; }
+        .quiz-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--accent); border-radius: 2px; }
+        .question-block { margin-bottom: 32px; padding: 28px; background: #FAFCFC; border-radius: 12px; border: 1px solid var(--border); transition: var(--transition); }
+        .question-block:hover { border-color: #CBD5E1; box-shadow: var(--shadow-sm); }
+        .question-number { display: inline-flex; align-items: center; justify-content: center; background: var(--primary); color: white; width: 28px; height: 28px; border-radius: 50%; font-size: 0.85rem; font-weight: bold; margin-right: 12px; flex-shrink: 0; }
+        body[dir="rtl"] .question-number { margin-right: 0; margin-left: 12px; }
+        .question-text { font-weight: 600; font-size: 1.05rem; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option-card { display: flex; align-items: center; padding: 16px 20px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; transition: var(--transition); }
+        .option-card:hover { border-color: var(--accent); background: var(--accent-light); transform: translateX(4px); }
+        body[dir="rtl"] .option-card:hover { transform: translateX(-4px); }
+        .option-card.selected { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 4px 12px rgba(197, 160, 89, 0.15); }
+        .option-card input[type="radio"] { display: none; }
+        .custom-radio { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 50%; margin-right: 15px; display: flex; align-items: center; justify-content: center; transition: var(--transition); flex-shrink: 0; }
+        body[dir="rtl"] .custom-radio { margin-right: 0; margin-left: 15px; }
+        .option-card.selected .custom-radio { border-color: var(--accent); background: var(--accent); }
+        .option-card.selected .custom-radio::after { content: ''; width: 8px; height: 8px; background: white; border-radius: 50%; }
+        .option-text { font-size: 0.95rem; color: var(--text-main); font-weight: 500; }
+        .option-card.correct { border-color: var(--success) !important; background: var(--success-bg) !important; }
+        .option-card.correct .custom-radio { border-color: var(--success); background: var(--success); }
+        .option-card.incorrect { border-color: var(--error) !important; background: var(--error-bg) !important; }
+        .option-card.incorrect .custom-radio { border-color: var(--error); background: var(--error); }
+        .explanation-box { margin-top: 20px; padding: 18px 20px; background: #FFFBF0; border-left: 4px solid var(--accent); border-radius: 8px; display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .explanation-box.show { display: block; opacity: 1; transform: translateY(0); }
+        [dir="rtl"] .explanation-box { border-left: none; border-right: 4px solid var(--accent); }
+        .explanation-header { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--primary); margin-bottom: 8px; font-size: 0.95rem; }
+        .explanation-icon { color: var(--accent); font-size: 1.1rem; }
+        .explanation-text { color: var(--secondary); font-size: 0.92rem; line-height: 1.7; }
+        .submit-btn { display: block; width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary) 0%, #1E293B 100%); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 30px; transition: var(--transition); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2); }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(15, 23, 42, 0.3); }
+        .result-box { margin-top: 30px; padding: 30px; border-radius: 12px; text-align: center; display: none; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .result-box.correct { background: linear-gradient(135deg, rgba(5, 150, 105, 0.05), rgba(5, 150, 105, 0.1)); border: 1px solid var(--success); }
+        .result-box.incorrect { background: linear-gradient(135deg, rgba(220, 38, 38, 0.05), rgba(220, 38, 38, 0.1)); border: 1px solid var(--error); }
+        .score-display { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
+        .result-box.correct .score-display { color: var(--success); }
+        .result-box.incorrect .score-display { color: var(--error); }
+        .result-msg { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; }
+        footer { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+        @media (max-width: 768px) {
+            .brand h1 { font-size: 1.5rem; } .quiz-container { padding: 24px; } .question-block { padding: 20px; }
+            .fab-translate { width: 50px; height: 50px; bottom: 20px; right: 20px; } [dir="rtl"] .fab-translate { left: 20px; right: auto; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="brand">
+            <h1 id="main-title">Introduction to Risk Management</h1>
+            <span id="sub-title">Chapter 3: Principles & Applications</span>
+        </div>
+    </div>
+</header>
+
+<button class="fab-translate" id="fab-translate" onclick="toggleLanguage(this)">
+    <span class="fab-icon">🌐</span>
+    <span class="fab-tooltip" id="fab-tooltip">Translate to العربية</span>
+</button>
+
+<div class="container">
+    <div class="tabs-wrapper">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchQuiz(0)" id="tab-0">Quiz 1</button>
+            <button class="tab-btn" onclick="switchQuiz(1)" id="tab-1">Quiz 2</button>
+        </div>
+    </div>
+    <div class="quiz-container">
+        <h2 class="quiz-title" id="quiz-title"></h2>
+        <form id="quiz-form"></form>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()">Submit Answers</button>
+        <div class="result-box" id="result-box">
+            <div class="score-display" id="score-display"></div>
+            <div class="result-msg" id="result-msg"></div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p id="footer-text">Based on "Principles of Risk Management and Insurance" - Chapter 3</p>
+</footer>
+
+<script>
+    let currentLang = 'en';
+    let currentQuizIndex = 0;
+    let userAnswers = {};
+    let submittedQuizzes = {};
+
+    const translations = {
+        en: {
+            mainTitle: "Introduction to Risk Management", subTitle: "Chapter 3: Principles & Applications",
+            fabTooltip: "Translate to العربية", submitBtn: "Submit Answers",
+            footer: "Based on \"Principles of Risk Management and Insurance\" - Chapter 3",
+            resultCorrect: "Outstanding! You have mastered this section.",
+            resultIncorrect: "Good effort. Review the explanations below and try again.",
+            explainTitle: "Explanation"
+        },
+        ar: {
+            mainTitle: "مقدمة في إدارة المخاطر", subTitle: "الفصل الثالث: المبادئ والتطبيقات",
+            fabTooltip: "Translate to English", submitBtn: "إرسال الإجابات",
+            footer: "بناءً على مادة \"مبادئ إدارة المخاطر والتأمين\" - الفصل الثالث",
+            resultCorrect: "أداء ممتاز! لقد أتقنت هذا القسم.",
+            resultIncorrect: "جهد جيد. راجع الشرح أدناه وحاول مرة أخرى.",
+            explainTitle: "الشرح"
+        }
+    };
+
+    const quizzes = [
+        {
+            title: { en: "Quiz 1: Concepts, Steps, Risk Control & Financing", ar: "الاختبار الأول: المفاهيم، الخطوات، التحكم والتمويل" },
+            questions: [
+                { q: { en: "Risk Management is defined as a process that:", ar: "إدارة المخاطر تُعرّف بأنها عملية:" }, options: [ { en: "Eliminates all risks from an organization.", ar: "تلغي جميع المخاطر من المنظمة." }, { en: "Identifies loss exposures and selects the most appropriate techniques for treating them.", ar: "تحدد تعرضات الخسارة وتختار التقنيات الأنسب لمعالجتها." }, { en: "Only focuses on insurance purchasing.", ar: "تركز فقط على شراء التأمين." }, { en: "Transfers all risks to the government.", ar: "تنقل جميع المخاطر إلى الحكومة." } ], answer: 1, explanation: { en: "Risk Management is a process that identifies loss exposures faced by an organization and selects the most appropriate techniques for treating such exposures.", ar: "إدارة المخاطر هي عملية تحدد تعرضات الخسارة التي تواجهها المنظمة وتختار التقنيات الأنسب لمعالجة هذه التعرضات." } },
+                { q: { en: "A loss exposure is defined as:", ar: "تعرض الخسارة (Loss Exposure) يُعرّف بأنه:" }, options: [ { en: "A loss that has already occurred.", ar: "خسارة حدثت بالفعل." }, { en: "Any situation in which a loss is possible, regardless of whether a loss occurs.", ar: "أي موقف تكون فيه الخسارة ممكنة، بغض النظر عن حدوث الخسارة فعلياً." }, { en: "An insurance policy.", ar: "وثيقة تأمين." }, { en: "A guaranteed future loss.", ar: "خسارة مستقبلية مضمونة." } ], answer: 1, explanation: { en: "A loss exposure is any situation or circumstance in which a loss is possible, regardless of whether a loss actually occurs.", ar: "تعرض الخسارة هو أي موقف أو ظرف تكون فيه الخسارة ممكنة، بغض النظر عن حدوث الخسارة فعلياً." } },
+                { q: { en: "Which of the following is a PRE-LOSS objective of risk management?", ar: "أي مما يلي يعتبر هدفاً من أهداف إدارة المخاطر قبل حدوث الخسارة (PRE-LOSS)؟" }, options: [ { en: "Survival of the firm.", ar: "بقاء الشركة." }, { en: "Continuity of operations.", ar: "استمرارية العمليات." }, { en: "Economy in preparing for losses.", ar: "الاقتصاد في الاستعداد للخسائر." }, { en: "Stability of earnings after a loss.", ar: "استقرار الأرباح بعد الخسارة." } ], answer: 2, explanation: { en: "Pre-loss objectives include: Economy, Anxiety Reduction, and Legal Compliance. Survival and continuity are post-loss objectives.", ar: "الأهداف قبل الخسارة تشمل: الاقتصاد، تقليل القلق، والامتثال القانوني. أما البقاء والاستمرارية فهي أهداف بعد الخسارة." } },
+                { q: { en: "Which of the following is a POST-LOSS objective of risk management?", ar: "أي مما يلي يعتبر هدفاً من أهداف إدارة المخاطر بعد حدوث الخسارة (POST-LOSS)؟" }, options: [ { en: "Reduce anxiety.", ar: "تقليل القلق." }, { en: "Meet legal obligations.", ar: "الوفاء بالالتزامات القانونية." }, { en: "Survival of the firm.", ar: "بقاء الشركة." }, { en: "Prepare for losses economically.", ar: "الاستعداد للخسائر اقتصادياً." } ], answer: 2, explanation: { en: "Post-loss objectives include: Survival, Continuity of operations, Stability of earnings, Continued growth, and Social responsibility.", ar: "الأهداف بعد الخسارة تشمل: البقاء، استمرارية العمليات، استقرار الأرباح، النمو المستمر، والمسؤولية الاجتماعية." } },
+                { q: { en: "The formula for Expected Annual Loss (Risk Score) is:", ar: "صيغة الخسارة السنوية المتوقعة (Risk Score) هي:" }, options: [ { en: "E(AL) = λ + μ", ar: "E(AL) = λ + μ" }, { en: "E(AL) = λ × μ", ar: "E(AL) = λ × μ" }, { en: "E(AL) = λ / μ", ar: "E(AL) = λ / μ" }, { en: "E(AL) = μ − λ", ar: "E(AL) = μ − λ" } ], answer: 1, explanation: { en: "Expected Annual Loss (Risk Score) = Loss Frequency (λ) × Loss Severity (μ).", ar: "الخسارة السنوية المتوقعة (Risk Score) = تكرار الخسارة (λ) × شدة الخسارة (μ)." } },
+                { q: { en: "A firm had 20 losses over 5 years totaling $600,000. What is the Loss Frequency (λ)?", ar: "شركة تعرضت لـ 20 خسارة على مدى 5 سنوات بإجمالي 600,000 دولار. ما هو تكرار الخسارة (λ)؟" }, options: [ { en: "2 losses/year", ar: "2 خسارة/سنة" }, { en: "4 losses/year", ar: "4 خسارات/سنة" }, { en: "5 losses/year", ar: "5 خسارات/سنة" }, { en: "20 losses/year", ar: "20 خسارة/سنة" } ], answer: 1, explanation: { en: "Loss Frequency (λ) = Number of Losses / Time Period = 20 / 5 = 4 losses/year.", ar: "تكرار الخسارة (λ) = عدد الخسائر / الفترة الزمنية = 20 / 5 = 4 خسارات/سنة." } },
+                { q: { en: "Using the same data (20 losses, $600,000 total), what is the Loss Severity (μ)?", ar: "باستخدام نفس البيانات (20 خسارة، 600,000 دولار إجمالي)، ما هي شدة الخسارة (μ)؟" }, options: [ { en: "$20,000", ar: "20,000 دولار" }, { en: "$30,000", ar: "30,000 دولار" }, { en: "$40,000", ar: "40,000 دولار" }, { en: "$50,000", ar: "50,000 دولار" } ], answer: 1, explanation: { en: "Loss Severity (μ) = Total Loss Amount / Number of Losses = 600,000 / 20 = $30,000.", ar: "شدة الخسارة (μ) = إجمالي مبلغ الخسارة / عدد الخسائر = 600,000 / 20 = 30,000 دولار." } },
+                { q: { en: "A risk manager identified four exposures. Fire has frequency 0.05 and severity $500,000. What is its risk score?", ar: "حدد مدير المخاطر أربعة تعرضات. الحريق له تكرار 0.05 وشدة 500,000 دولار. ما هو درجة المخاطر (Risk Score)؟" }, options: [ { en: "$5,000", ar: "5,000 دولار" }, { en: "$25,000", ar: "25,000 دولار" }, { en: "$50,000", ar: "50,000 دولار" }, { en: "$100,000", ar: "100,000 دولار" } ], answer: 1, explanation: { en: "Risk Score = Frequency × Severity = 0.05 × 500,000 = $25,000.", ar: "درجة المخاطر = التكرار × الشدة = 0.05 × 500,000 = 25,000 دولار." } },
+                { q: { en: "The Cost of Risk (COR) formula is:", ar: "صيغة تكلفة المخاطر (COR) هي:" }, options: [ { en: "COR = Total Risk Costs × Revenue", ar: "COR = إجمالي تكاليف المخاطر × الإيرادات" }, { en: "COR = Total Risk Costs / Revenue", ar: "COR = إجمالي تكاليف المخاطر / الإيرادات" }, { en: "COR = Revenue / Total Risk Costs", ar: "COR = الإيرادات / إجمالي تكاليف المخاطر" }, { en: "COR = Total Risk Costs + Revenue", ar: "COR = إجمالي تكاليف المخاطر + الإيرادات" } ], answer: 1, explanation: { en: "COR = Total Risk Costs / Revenue. Total risk costs include premiums, retained losses, risk control costs, and administrative costs.", ar: "COR = إجمالي تكاليف المخاطر / الإيرادات. تشمل تكاليف المخاطر الإجمالية الأقساط، الخسائر المحتفظ بها، تكاليف التحكم في المخاطر، والتكاليف الإدارية." } },
+                { q: { en: "A firm has revenue of $50,000,000. Risk costs: premiums $800,000, retained losses $200,000, risk control $300,000, admin $150,000. What is the COR?", ar: "شركة إيراداتها 50,000,000 دولار. تكاليف المخاطر: الأقساط 800,000، الخسائر المحتفظ بها 200,000، التحكم في المخاطر 300,000، الإدارة 150,000. ما هي COR؟" }, options: [ { en: "2.0%", ar: "2.0%" }, { en: "2.5%", ar: "2.5%" }, { en: "2.9%", ar: "2.9%" }, { en: "3.5%", ar: "3.5%" } ], answer: 2, explanation: { en: "Total Risk Costs = 800,000 + 200,000 + 300,000 + 150,000 = $1,450,000. COR = 1,450,000 / 50,000,000 = 0.029 = 2.9%.", ar: "إجمالي تكاليف المخاطر = 800,000 + 200,000 + 300,000 + 150,000 = 1,450,000 دولار. COR = 1,450,000 / 50,000,000 = 0.029 = 2.9%." } },
+                { q: { en: "The correct order of steps in the Risk Management Process is:", ar: "الترتيب الصحيح لخطوات عملية إدارة المخاطر هو:" }, options: [ { en: "Select techniques → Identify losses → Monitor → Measure.", ar: "اختيار التقنيات → تحديد الخسائر → المراقبة → القياس." }, { en: "Identify potential losses → Measure and analyze → Select techniques → Implement and monitor.", ar: "تحديد الخسائر المحتملة → القياس والتحليل → اختيار التقنيات → التنفيذ والمراقبة." }, { en: "Monitor → Implement → Identify → Measure.", ar: "المراقبة → التنفيذ → التحديد → القياس." }, { en: "Measure → Select → Identify → Implement.", ar: "القياس → الاختيار → التحديد → التنفيذ." } ], answer: 1, explanation: { en: "The four steps are: (1) Identify potential losses, (2) Measure and analyze the loss exposures, (3) Select appropriate techniques, (4) Implement and monitor the program.", ar: "الخطوات الأربع هي: (1) تحديد الخسائر المحتملة، (2) قياس وتحليل تعرضات الخسارة، (3) اختيار التقنيات المناسبة، (4) تنفيذ ومراقبة البرنامج." } },
+                { q: { en: "Which of the following is a method to identify potential loss exposures?", ar: "أي مما يلي يعتبر طريقة لتحديد تعرضات الخسارة المحتملة؟" }, options: [ { en: "Purchasing insurance only.", ar: "شراء التأمين فقط." }, { en: "Risk analysis questionnaires, physical inspection, flowcharts, and historical loss data.", ar: "استبيانات تحليل المخاطر، التفتيش المادي، المخططات الانسيابية، وبيانات الخسائر التاريخية." }, { en: "Ignoring past losses.", ar: "تجاهل الخسائر السابقة." }, { en: "Avoiding all business activities.", ar: "تجنب جميع أنشطة الأعمال." } ], answer: 1, explanation: { en: "Risk managers use several sources: risk analysis questionnaires, checklists, physical inspection, flowcharts, financial statements, historical loss data, industry trends, and audits.", ar: "يستخدم مديرو المخاطر عدة مصادر: استبيانات تحليل المخاطر، قوائم التحقق، التفتيش المادي، المخططات الانسيابية، القوائم المالية، بيانات الخسائر التاريخية، اتجاهات الصناعة، والمراجعات." } },
+                { q: { en: "Risk Control refers to techniques that:", ar: "التحكم في المخاطر (Risk Control) يشير إلى التقنيات التي:" }, options: [ { en: "Provide funding for losses after they occur.", ar: "توفر تمويل الخسائر بعد حدوثها." }, { en: "Reduce the frequency and/or severity of losses.", ar: "تقلل من تكرار و/أو شدة الخسائر." }, { en: "Transfer all risk to the government.", ar: "تنقل جميع المخاطر إلى الحكومة." }, { en: "Eliminate the need for insurance.", ar: "تلغي الحاجة إلى التأمين." } ], answer: 1, explanation: { en: "Risk control refers to techniques that reduce the frequency and severity of losses.", ar: "التحكم في المخاطر يشير إلى التقنيات التي تقلل من تكرار وشدة الخسائر." } },
+                { q: { en: "Avoidance as a risk control technique means:", ar: "التجنب (Avoidance) كتقنية للتحكم في المخاطر يعني:" }, options: [ { en: "Reducing the frequency of a loss.", ar: "تقليل تكرار الخسارة." }, { en: "Never undertaking a certain loss exposure, or abandoning an existing one.", ar: "عدم القيام بتعرض خسارة معين أبداً، أو التخلي عن تعرض موجود." }, { en: "Transferring risk by contract.", ar: "نقل المخاطر عن طريق العقد." }, { en: "Purchasing insurance.", ar: "شراء التأمين." } ], answer: 1, explanation: { en: "Avoidance means a certain loss exposure is never undertaken, or an existing loss exposure is abandoned. The chance of loss is reduced to zero.", ar: "التجنب يعني عدم القيام بتعرض خسارة معين أبداً، أو التخلي عن تعرض خسارة موجود. يتم تقليل احتمال الخسارة إلى الصفر." } },
+                { q: { en: "Loss Prevention reduces ______, while Loss Reduction reduces ______.", ar: "منع الخسارة يقلل من ______، بينما تقليل الخسارة يقلل من ______." }, options: [ { en: "Severity; frequency.", ar: "الشدة؛ التكرار." }, { en: "Frequency; severity.", ar: "التكرار؛ الشدة." }, { en: "Both severity; both frequency.", ar: "كلاهما الشدة؛ كلاهما التكرار." }, { en: "Cost; time.", ar: "التكلفة؛ الوقت." } ], answer: 1, explanation: { en: "Loss prevention reduces the frequency of a particular loss. Loss reduction reduces the severity of a loss after it occurs.", ar: "منع الخسارة يقلل من تكرار خسارة معينة. تقليل الخسارة يقلل من شدة الخسارة بعد حدوثها." } },
+                { q: { en: "Duplication, Separation, and Diversification are methods of:", ar: "الازدواجية، الفصل، والتنويع هي طرق لـ:" }, options: [ { en: "Risk financing.", ar: "تمويل المخاطر." }, { en: "Loss reduction (risk control).", ar: "تقليل الخسارة (التحكم في المخاطر)." }, { en: "Insurance purchasing.", ar: "شراء التأمين." }, { en: "Loss prevention only.", ar: "منع الخسارة فقط." } ], answer: 1, explanation: { en: "Duplication (having backups), separation (dividing assets), and diversification (spreading exposure) are methods of loss reduction under risk control.", ar: "الازدواجية (وجود نسخ احتياطية)، الفصل (تقسيم الأصول)، والتنويع (نشر التعرض) هي طرق لتقليل الخسارة ضمن التحكم في المخاطر." } },
+                { q: { en: "Risk Financing refers to techniques that:", ar: "تمويل المخاطر (Risk Financing) يشير إلى التقنيات التي:" }, options: [ { en: "Reduce the frequency of losses.", ar: "تقلل من تكرار الخسائر." }, { en: "Provide for the payment of losses after they occur.", ar: "توفر دفع الخسائر بعد حدوثها." }, { en: "Eliminate all risks.", ar: "تلغي جميع المخاطر." }, { en: "Prevent losses before they occur.", ar: "تمنع الخسائر قبل حدوثها." } ], answer: 1, explanation: { en: "Risk financing refers to techniques that provide for the payment of losses after they occur. Methods include retention, non-insurance transfers, and commercial insurance.", ar: "تمويل المخاطر يشير إلى التقنيات التي توفر دفع الخسائر بعد حدوثها. تشمل الطرق: الاحتفاظ، النقل غير التأميني، والتأمين التجاري." } },
+                { q: { en: "Retention as a risk financing technique means:", ar: "الاحتفاظ (Retention) كتقنية لتمويل المخاطر يعني:" }, options: [ { en: "Transferring risk to an insurer.", ar: "نقل المخاطر إلى شركة تأمين." }, { en: "The firm retains part or all of the losses that can result from a given risk.", ar: "تحتفظ الشركة بجزء أو كل الخسائر التي يمكن أن تنتج عن خطر معين." }, { en: "Avoiding all risky activities.", ar: "تجنب جميع الأنشطة الخطرة." }, { en: "Purchasing excess insurance.", ar: "شراء تأمين زائد." } ], answer: 1, explanation: { en: "Retention means that the firm retains part or all of the losses that can result from a given loss exposure.", ar: "الاحتفاظ يعني أن الشركة تحتفظ بجزء أو كل الخسائر التي يمكن أن تنتج عن تعرض خسارة معين." } },
+                { q: { en: "A captive insurer is:", ar: "شركة التأمين التابعة (Captive Insurer) هي:" }, options: [ { en: "A government insurance program.", ar: "برنامج تأمين حكومي." }, { en: "An insurer owned by a parent firm for the purpose of insuring the parent firm's loss exposures.", ar: "شركة تأمين مملوكة لشركة أم لغرض تأمين تعرضات الخسارة للشركة الأم." }, { en: "A type of reinsurance company.", ar: "نوع من شركات إعادة التأمين." }, { en: "An insurance broker.", ar: "وسيط تأمين." } ], answer: 1, explanation: { en: "A captive insurer is an insurer owned by a parent firm for the purpose of insuring the parent firm's loss exposures. Reasons include difficulty obtaining insurance, favorable regulation, lower costs, and easier access to reinsurers.", ar: "شركة التأمين التابعة هي شركة تأمين مملوكة لشركة أم لغرض تأمين تعرضات الخسارة للشركة الأم. تشمل الأسباب: صعوبة الحصول على التأمين، لوائح مواتية، تكاليف أقل، ووصول أسهل إلى معيدي التأمين." } },
+                { q: { en: "The insurance payment formula with a deductible is:", ar: "صيغة دفع التأمين مع وجود خصم (Deductible) هي:" }, options: [ { en: "Payment = Loss + Deductible", ar: "Payment = Loss + Deductible" }, { en: "Payment = max(0, Loss − Deductible)", ar: "Payment = max(0, Loss − Deductible)" }, { en: "Payment = Loss × Deductible", ar: "Payment = Loss × Deductible" }, { en: "Payment = Loss / Deductible", ar: "Payment = Loss / Deductible" } ], answer: 1, explanation: { en: "Insurance Payment = max(0, Loss − Deductible). If loss is below the deductible, the insurer pays zero.", ar: "دفع التأمين = max(0, الخسارة − الخصم). إذا كانت الخسارة أقل من الخصم، تدفع شركة التأمين صفراً." } }
+            ]
+        },
+        {
+            title: { en: "Quiz 2: Co-Insurance, Cost-Benefit, RAROC & HLV", ar: "الاختبار الثاني: التأمين المشترك، تحليل التكلفة-الفائدة، RAROC و HLV" },
+            questions: [
+                { q: { en: "The Co-Insurance formula for Required Insurance is:", ar: "صيغة التأمين المطلوب (Required Insurance) في التأمين المشترك هي:" }, options: [ { en: "Required Insurance = Property Value / Coinsurance %", ar: "Required Insurance = Property Value / Coinsurance %" }, { en: "Required Insurance = Coinsurance % × Property Value", ar: "Required Insurance = Coinsurance % × Property Value" }, { en: "Required Insurance = Loss × Coinsurance %", ar: "Required Insurance = Loss × Coinsurance %" }, { en: "Required Insurance = Deductible × Property Value", ar: "Required Insurance = Deductible × Property Value" } ], answer: 1, explanation: { en: "Required Insurance = Coinsurance % × Property Value. If the insured buys less than required, payment is reduced proportionally.", ar: "التأمين المطلوب = نسبة التأمين المشترك × قيمة الممتلكات. إذا اشترى المؤمن عليه أقل من المطلوب، يتم تقليل الدفع بشكل متناسب." } },
+                { q: { en: "A warehouse valued at $500,000 has an 80% coinsurance clause. Owner buys $350,000 coverage. Fire causes $80,000 damage. What does the insurer pay?", ar: "مستودع قيمته 500,000 دولار لديه شرط تأمين مشترك 80%. اشترى المالك تغطية 350,000 دولار. تسبب حريق في أضرار 80,000 دولار. كم تدفع شركة التأمين؟" }, options: [ { en: "$80,000", ar: "80,000 دولار" }, { en: "$70,000", ar: "70,000 دولار" }, { en: "$56,000", ar: "56,000 دولار" }, { en: "$0", ar: "0 دولار" } ], answer: 1, explanation: { en: "Required = 0.80 × 500,000 = 400,000. Payment = Loss × (Insurance Purchased / Required) = 80,000 × (350,000 / 400,000) = 80,000 × 0.875 = $70,000.", ar: "المطلوب = 0.80 × 500,000 = 400,000. الدفع = الخسارة × (التأمين المشترى / المطلوب) = 80,000 × (350,000 / 400,000) = 80,000 × 0.875 = 70,000 دولار." } },
+                { q: { en: "An apartment building valued at $2,000,000 has a 90% coinsurance clause. Owner buys $1,500,000. Fire causes $300,000 damage. What does the insurer pay?", ar: "مبنى شقق قيمته 2,000,000 دولار لديه شرط تأمين مشترك 90%. اشترى المالك 1,500,000 دولار. تسبب حريق في أضرار 300,000 دولار. كم تدفع شركة التأمين؟" }, options: [ { en: "$300,000", ar: "300,000 دولار" }, { en: "$250,000", ar: "250,000 دولار" }, { en: "$225,000", ar: "225,000 دولار" }, { en: "$200,000", ar: "200,000 دولار" } ], answer: 1, explanation: { en: "Required = 0.90 × 2,000,000 = 1,800,000. Payment = 300,000 × (1,500,000 / 1,800,000) = 300,000 × (5/6) = $250,000.", ar: "المطلوب = 0.90 × 2,000,000 = 1,800,000. الدفع = 300,000 × (1,500,000 / 1,800,000) = 300,000 × (5/6) = 250,000 دولار." } },
+                { q: { en: "The Net Benefit formula for a loss prevention program is:", ar: "صيغة صافي الفائدة (Net Benefit) لبرنامج منع الخسارة هي:" }, options: [ { en: "Net Benefit = Prevention Cost − (ΔFrequency × Severity)", ar: "Net Benefit = Prevention Cost − (ΔFrequency × Severity)" }, { en: "Net Benefit = [E(L)before − E(L)after] − Prevention Cost", ar: "Net Benefit = [E(L)before − E(L)after] − Prevention Cost" }, { en: "Net Benefit = E(L)after − Prevention Cost", ar: "Net Benefit = E(L)after − Prevention Cost" }, { en: "Net Benefit = E(L)before + Prevention Cost", ar: "Net Benefit = E(L)before + Prevention Cost" } ], answer: 1, explanation: { en: "Net Benefit = [E(L)before − E(L)after] − Prevention Cost. The program should be implemented if net benefit is positive.", ar: "صافي الفائدة = [E(L)قبل − E(L)بعد] − تكلفة المنع. يجب تنفيذ البرنامج إذا كان صافي الفائدة موجباً." } },
+                { q: { en: "A distribution center has frequency 0.25/year, severity $80,000. A safety program reduces frequency to 0.10 at cost $5,000/year. What is the net benefit?", ar: "مركز توزيع لديه تكرار 0.25/سنة، شدة 80,000 دولار. برنامج سلامة يقلل التكرار إلى 0.10 بتكلفة 5,000 دولار/سنة. ما هو صافي الفائدة؟" }, options: [ { en: "$5,000", ar: "5,000 دولار" }, { en: "$7,000", ar: "7,000 دولار" }, { en: "$12,000", ar: "12,000 دولار" }, { en: "$20,000", ar: "20,000 دولار" } ], answer: 1, explanation: { en: "E(L)before = 0.25 × 80,000 = 20,000. E(L)after = 0.10 × 80,000 = 8,000. Net Benefit = (20,000 − 8,000) − 5,000 = 12,000 − 5,000 = $7,000. Implement the program.", ar: "E(L)قبل = 0.25 × 80,000 = 20,000. E(L)بعد = 0.10 × 80,000 = 8,000. صافي الفائدة = (20,000 − 8,000) − 5,000 = 12,000 − 5,000 = 7,000 دولار. نفذ البرنامج." } },
+                { q: { en: "A retail chain has frequency 0.50, severity $12,000. Prevention program reduces frequency to 0.30 at cost $3,000. Should it be implemented?", ar: "سلسلة تجزئة لديها تكرار 0.50، شدة 12,000 دولار. برنامج منع يقلل التكرار إلى 0.30 بتكلفة 3,000 دولار. هل يجب تنفيذه؟" }, options: [ { en: "Yes, net benefit is $600.", ar: "نعم، صافي الفائدة 600 دولار." }, { en: "No, net benefit is −$600.", ar: "لا، صافي الفائدة −600 دولار." }, { en: "Yes, net benefit is $2,400.", ar: "نعم، صافي الفائدة 2,400 دولار." }, { en: "No, net benefit is −$2,400.", ar: "لا، صافي الفائدة −2,400 دولار." } ], answer: 1, explanation: { en: "E(L)before = 0.50 × 12,000 = 6,000. E(L)after = 0.30 × 12,000 = 3,600. Net Benefit = (6,000 − 3,600) − 3,000 = 2,400 − 3,000 = −$600. Do NOT implement.", ar: "E(L)قبل = 0.50 × 12,000 = 6,000. E(L)بعد = 0.30 × 12,000 = 3,600. صافي الفائدة = (6,000 − 3,600) − 3,000 = 2,400 − 3,000 = −600 دولار. لا تنفذ." } },
+                { q: { en: "The Combined Risk Reduction formula for independent layered measures is:", ar: "صيغة تقليل المخاطر المجمع (Combined Risk Reduction) للتدابير الطبقية المستقلة هي:" }, options: [ { en: "Combined Reduction = (R1) + (R2) + (R3) + ...", ar: "Combined Reduction = (R1) + (R2) + (R3) + ..." }, { en: "Combined Reduction = 1 − [(R1)(R2)(R3)...]", ar: "Combined Reduction = 1 − [(R1)(R2)(R3)...]" }, { en: "Combined Reduction = (R1) × (R2) × (R3)", ar: "Combined Reduction = (R1) × (R2) × (R3)" }, { en: "Combined Reduction = 1 + [(R1)(R2)(R3)...]", ar: "Combined Reduction = 1 + [(R1)(R2)(R3)...]" } ], answer: 1, explanation: { en: "Combined Reduction = 1 − [(R1)(R2)(R3)...] where R1, R2, R3 are the remaining risk proportions after each measure.", ar: "التقليل المجمع = 1 − [(R1)(R2)(R3)...] حيث R1, R2, R3 هي نسب المخاطر المتبقية بعد كل تدبير." } },
+                { q: { en: "A factory has four independent safety systems. Remaining risk: 40%, 25%, 20%, 10%. What is the combined risk reduction?", ar: "مصنع لديه أربعة أنظمة سلامة مستقلة. المخاطر المتبقية: 40%، 25%، 20%، 10%. ما هو التقليل المجمع للمخاطر؟" }, options: [ { en: "75%", ar: "75%" }, { en: "95%", ar: "95%" }, { en: "99.8%", ar: "99.8%" }, { en: "100%", ar: "100%" } ], answer: 2, explanation: { en: "Combined Reduction = 1 − [(0.40)(0.25)(0.20)(0.10)] = 1 − 0.002 = 0.998 = 99.8%. Layering greatly reduces risk but never to exactly zero.", ar: "التقليل المجمع = 1 − [(0.40)(0.25)(0.20)(0.10)] = 1 − 0.002 = 0.998 = 99.8%. الطبقات تقلل المخاطر بشكل كبير ولكن ليس إلى الصفر تماماً." } },
+                { q: { en: "A data center has three measures with remaining risk: 10%, 25%, 15%. What is the combined reduction?", ar: "مركز بيانات لديه ثلاثة تدابير بمخاطر متبقية: 10%، 25%، 15%. ما هو التقليل المجمع؟" }, options: [ { en: "50%", ar: "50%" }, { en: "95%", ar: "95%" }, { en: "99.6%", ar: "99.6%" }, { en: "100%", ar: "100%" } ], answer: 2, explanation: { en: "Combined Reduction = 1 − [(0.10)(0.25)(0.15)] = 1 − 0.00375 = 0.99625 ≈ 99.6%.", ar: "التقليل المجمع = 1 − [(0.10)(0.25)(0.15)] = 1 − 0.00375 = 0.99625 ≈ 99.6%." } },
+                { q: { en: "The RAROC (Risk-Adjusted Return on Capital) formula is:", ar: "صيغة RAROC (العائد المعدل حسب المخاطر على رأس المال) هي:" }, options: [ { en: "RAROC = Expected Return + Expected Loss / Economic Capital", ar: "RAROC = Expected Return + Expected Loss / Economic Capital" }, { en: "RAROC = (Expected Return − Expected Loss) / Economic Capital", ar: "RAROC = (Expected Return − Expected Loss) / Economic Capital" }, { en: "RAROC = Economic Capital / (Expected Return − Expected Loss)", ar: "RAROC = Economic Capital / (Expected Return − Expected Loss)" }, { en: "RAROC = Expected Loss / Expected Return", ar: "RAROC = Expected Loss / Expected Return" } ], answer: 1, explanation: { en: "RAROC = (Expected Return − Expected Loss) / Economic Capital. If RAROC > Cost of Capital, the division creates value.", ar: "RAROC = (العائد المتوقع − الخسارة المتوقعة) / رأس المال الاقتصادي. إذا كان RAROC > تكلفة رأس المال، فإن القسم يخلق قيمة." } },
+                { q: { en: "A division has: Expected Return $500,000, Expected Loss $100,000, Economic Capital $2,000,000, Cost of Capital 12%. What is RAROC?", ar: "قسم لديه: العائد المتوقع 500,000 دولار، الخسارة المتوقعة 100,000 دولار، رأس المال الاقتصادي 2,000,000 دولار، تكلفة رأس المال 12%. ما هو RAROC؟" }, options: [ { en: "15%", ar: "15%" }, { en: "20%", ar: "20%" }, { en: "25%", ar: "25%" }, { en: "30%", ar: "30%" } ], answer: 1, explanation: { en: "RAROC = (500,000 − 100,000) / 2,000,000 = 400,000 / 2,000,000 = 0.20 = 20%. Since 20% > 12% (cost of capital), the division creates value.", ar: "RAROC = (500,000 − 100,000) / 2,000,000 = 400,000 / 2,000,000 = 0.20 = 20%. بما أن 20% > 12% (تكلفة رأس المال)، فإن القسم يخلق قيمة." } },
+                { q: { en: "A division has: Expected Return $300,000, Expected Loss $60,000, Economic Capital $1,500,000, Cost of Capital 10%. Does it create value?", ar: "قسم لديه: العائد المتوقع 300,000 دولار، الخسارة المتوقعة 60,000 دولار، رأس المال الاقتصادي 1,500,000 دولار، تكلفة رأس المال 10%. هل يخلق قيمة؟" }, options: [ { en: "No, RAROC is 10%.", ar: "لا، RAROC هو 10%." }, { en: "Yes, RAROC is 16% > 10%.", ar: "نعم، RAROC هو 16% > 10%." }, { en: "No, RAROC is 8%.", ar: "لا، RAROC هو 8%." }, { en: "Yes, RAROC is 20%.", ar: "نعم، RAROC هو 20%." } ], answer: 1, explanation: { en: "RAROC = (300,000 − 60,000) / 1,500,000 = 240,000 / 1,500,000 = 0.16 = 16%. Since 16% > 10%, the division creates value.", ar: "RAROC = (300,000 − 60,000) / 1,500,000 = 240,000 / 1,500,000 = 0.16 = 16%. بما أن 16% > 10%، فإن القسم يخلق قيمة." } },
+                { q: { en: "Human Life Value (HLV) estimates:", ar: "القيمة البشرية للحياة (HLV) تقدر:" }, options: [ { en: "The cost of funeral expenses.", ar: "تكلفة نفقات الجنازة." }, { en: "The present value of future net income contributed to the family.", ar: "القيمة الحالية لصافي الدخل المستقبلي المساهم به للعائلة." }, { en: "The total assets of a person.", ar: "إجمالي أصول الشخص." }, { en: "The insurance premium needed.", ar: "قسط التأمين المطلوب." } ], answer: 1, explanation: { en: "HLV estimates the present value of future net income contributed to family. The higher the net contribution and longer the time period, the higher the HLV.", ar: "HLV تقدر القيمة الحالية لصافي الدخل المستقبلي المساهم به للعائلة. كلما زاد صافي المساهمة وطالت الفترة الزمنية، ارتفعت HLV." } },
+                { q: { en: "HLV Formula is:", ar: "صيغة HLV هي:" }, options: [ { en: "HLV = ∑ Net Income × (1 + r)^t", ar: "HLV = ∑ Net Income × (1 + r)^t" }, { en: "HLV = ∑ Net Income / (1 + r)^t", ar: "HLV = ∑ Net Income / (1 + r)^t" }, { en: "HLV = Net Income / r", ar: "HLV = Net Income / r" }, { en: "HLV = Net Income × t", ar: "HLV = Net Income × t" } ], answer: 1, explanation: { en: "HLV = ∑ Net Income / (1 + r)^t, where r is the discount rate and t is the time period.", ar: "HLV = ∑ صافي الدخل / (1 + r)^t، حيث r هو معدل الخصم و t هي الفترة الزمنية." } },
+                { q: { en: "A 35-year-old earns $75,000/year, personal expenses $25,000, retires in 30 years, discount rate 5%. What is HLV?", ar: "شخص عمره 35 سنة يكسب 75,000 دولار/سنة، مصاريفه الشخصية 25,000 دولار، يتقاعد بعد 30 سنة، معدل الخصم 5%. ما هي HLV؟" }, options: [ { en: "$50,000", ar: "50,000 دولار" }, { en: "$1,500,000", ar: "1,500,000 دولار" }, { en: "$11,568.87", ar: "11,568.87 دولار" }, { en: "$25,000", ar: "25,000 دولار" } ], answer: 2, explanation: { en: "Net contribution = 75,000 − 25,000 = $50,000. HLV = 50,000 / (1.05)^30 = $11,568.87.", ar: "صافي المساهمة = 75,000 − 25,000 = 50,000 دولار. HLV = 50,000 / (1.05)^30 = 11,568.87 دولار." } },
+                { q: { en: "A 40-year-old contributes $60,000/year to family, retires in 25 years, discount rate 6%. What is HLV?", ar: "شخص عمره 40 سنة يساهم بـ 60,000 دولار/سنة للعائلة، يتقاعد بعد 25 سنة، معدل الخصم 6%. ما هي HLV؟" }, options: [ { en: "$60,000", ar: "60,000 دولار" }, { en: "$1,500,000", ar: "1,500,000 دولار" }, { en: "$13,979.91", ar: "13,979.91 دولار" }, { en: "$25,000", ar: "25,000 دولار" } ], answer: 2, explanation: { en: "HLV = 60,000 / (1.06)^25 = $13,979.91.", ar: "HLV = 60,000 / (1.06)^25 = 13,979.91 دولار." } },
+                { q: { en: "Which of the following is an advantage of Retention?", ar: "أي مما يلي يعتبر ميزة من مزايا الاحتفاظ (Retention)؟" }, options: [ { en: "Possible higher losses.", ar: "خسائر أعلى محتملة." }, { en: "Save on loss costs and expenses.", ar: "التوفير في تكاليف الخسائر والنفقات." }, { en: "Premiums may be costly.", ar: "الأقساط قد تكون مكلفة." }, { en: "Contract language may be unclear.", ar: "لغة العقد قد تكون غير واضحة." } ], answer: 1, explanation: { en: "Advantages of retention include: save on loss costs, save on expenses, encourage loss prevention, and increase cash flow. Higher losses is a disadvantage.", ar: "مزايا الاحتفاظ تشمل: التوفير في تكاليف الخسائر، التوفير في النفقات، تشجيع منع الخسارة، وزيادة التدفق النقدي. الخسائر الأعلى تعتبر عيباً." } },
+                { q: { en: "Which of the following is a disadvantage of Insurance?", ar: "أي مما يلي يعتبر عيباً من عيوب التأمين؟" }, options: [ { en: "Uncertainty is reduced.", ar: "يتم تقليل عدم اليقين." }, { en: "Premiums are income-tax deductible.", ar: "الأقساط قابلة للخصم من ضريبة الدخل." }, { en: "Premiums may be costly and negotiation takes time.", ar: "الأقساط قد تكون مكلفة والتفاوض يستغرق وقتاً." }, { en: "Firm knows losses and can continue to operate.", ar: "الشركة تعرف الخسائر ويمكنها الاستمرار في العمل." } ], answer: 2, explanation: { en: "Disadvantages of insurance include: premiums may be costly, negotiation of contracts takes time and effort, and the risk manager may become lax in exercising loss control.", ar: "عيوب التأمين تشمل: الأقساط قد تكون مكلفة، التفاوض على العقود يستغرق وقتاً وجهداً، وقد يصبح مدير المخاطر متهاوناً في ممارسة التحكم في الخسائر." } },
+                { q: { en: "A manuscript policy is:", ar: "وثيقة التأمين المفصلة (Manuscript Policy) هي:" }, options: [ { en: "A standard form policy.", ar: "وثيقة نموذجية قياسية." }, { en: "A policy specially tailored for the firm.", ar: "وثيقة مصممة خصيصاً للشركة." }, { en: "A government-mandated policy.", ar: "وثيقة مفوضة من الحكومة." }, { en: "A policy with no deductible.", ar: "وثيقة بدون خصم." } ], answer: 1, explanation: { en: "A manuscript policy is a policy specially tailored for the firm, rather than using a standard form.", ar: "وثيقة التأمين المفصلة هي وثيقة مصممة خصيصاً للشركة، بدلاً من استخدام نموذج قياسي." } },
+                { q: { en: "Implementation of a risk management program begins with:", ar: "تنفيذ برنامج إدارة المخاطر يبدأ بـ:" }, options: [ { en: "Purchasing insurance.", ar: "شراء التأمين." }, { en: "A risk management policy statement.", ar: "بيان سياسة إدارة المخاطر." }, { en: "Firing employees.", ar: "فصل الموظفين." }, { en: "Ignoring past losses.", ar: "تجاهل الخسائر السابقة." } ], answer: 1, explanation: { en: "Implementation begins with a risk management policy statement that outlines objectives, educates executives, gives the risk manager authority, and provides performance standards.", ar: "يبدأ التنفيذ ببيان سياسة إدارة المخاطر الذي يحدد الأهداف، يثقف التنفيذيين، يعطي مدير المخاطر سلطة، ويوفر معايير الأداء." } }
+            ]
+        }
+    ];
+
+    function toggleLanguage(btn) {
+        btn.classList.add('animate');
+        setTimeout(() => {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            
+            document.getElementById('main-title').innerText = translations[currentLang].mainTitle;
+            document.getElementById('sub-title').innerText = translations[currentLang].subTitle;
+            document.getElementById('fab-tooltip').innerText = translations[currentLang].fabTooltip;
+            document.getElementById('submit-btn').innerText = translations[currentLang].submitBtn;
+            document.getElementById('footer-text').innerText = translations[currentLang].footer;
+            
+            document.getElementById('tab-0').innerText = currentLang === 'en' ? 'Quiz 1' : 'الاختبار 1';
+            document.getElementById('tab-1').innerText = currentLang === 'en' ? 'Quiz 2' : 'الاختبار 2';
+
+            renderQuiz();
+            setTimeout(() => btn.classList.remove('animate'), 400);
+        }, 300);
+    }
+
+    function switchQuiz(index) {
+        currentQuizIndex = index;
+        document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+            btn.classList.toggle('active', i === index);
+        });
+        renderQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderQuiz() {
+        const quiz = quizzes[currentQuizIndex];
+        document.getElementById('quiz-title').innerText = quiz.title[currentLang];
+        
+        const form = document.getElementById('quiz-form');
+        form.innerHTML = '';
+
+        quiz.questions.forEach((q, qIndex) => {
+            const block = document.createElement('div');
+            block.className = 'question-block';
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, oIndex) => {
+                optionsHTML += `
+                    <label class="option-card" id="label-${currentQuizIndex}-${qIndex}-${oIndex}" onclick="selectOption(this, ${qIndex}, ${oIndex})">
+                        <input type="radio" name="q${currentQuizIndex}_${qIndex}" value="${oIndex}">
+                        <div class="custom-radio"></div>
+                        <span class="option-text">${opt[currentLang]}</span>
+                    </label>
+                `;
+            });
+
+            block.innerHTML = `
+                <div class="question-text">
+                    <span class="question-number">${qIndex + 1}</span>
+                    ${q.q[currentLang]}
+                </div>
+                <div class="options">${optionsHTML}</div>
+                <div class="explanation-box" id="exp-${currentQuizIndex}-${qIndex}">
+                    <div class="explanation-header">
+                        <span class="explanation-icon">💡</span>
+                        <span>${translations[currentLang].explainTitle}</span>
+                    </div>
+                    <div class="explanation-text">${q.explanation[currentLang]}</div>
+                </div>
+            `;
+            form.appendChild(block);
+
+            // Restore Answer State
+            const savedAns = userAnswers[`q${currentQuizIndex}_${qIndex}`];
+            if (savedAns !== undefined) {
+                const label = document.getElementById(`label-${currentQuizIndex}-${qIndex}-${savedAns}`);
+                if(label) {
+                    label.classList.add('selected');
+                    label.querySelector('input').checked = true;
+                }
+            }
+
+            // Restore Submission State
+            if (submittedQuizzes[currentQuizIndex]) {
+                document.getElementById(`label-${currentQuizIndex}-${qIndex}-${q.answer}`).classList.add('correct');
+                if (savedAns !== undefined && savedAns !== q.answer) {
+                    document.getElementById(`label-${currentQuizIndex}-${qIndex}-${savedAns}`).classList.add('incorrect');
+                }
+                document.getElementById(`exp-${currentQuizIndex}-${qIndex}`).classList.add('show');
+            }
+        });
+
+        // Restore Result Box State
+        const resultBox = document.getElementById('result-box');
+        if (submittedQuizzes[currentQuizIndex]) {
+            let score = 0;
+            quiz.questions.forEach((q, qIndex) => {
+                if (userAnswers[`q${currentQuizIndex}_${qIndex}`] === q.answer) score++;
+            });
+            const total = quiz.questions.length;
+            document.getElementById('score-display').innerText = `${score} / ${total}`;
+            if (score >= total * 0.8) {
+                resultBox.className = 'result-box correct';
+                document.getElementById('result-msg').innerText = translations[currentLang].resultCorrect;
+            } else {
+                resultBox.className = 'result-box incorrect';
+                document.getElementById('result-msg').innerText = translations[currentLang].resultIncorrect;
+            }
+            resultBox.style.display = 'block';
+        } else {
+            resultBox.style.display = 'none';
+        }
+    }
+
+    function selectOption(element, qIndex, oIndex) {
+        const parent = element.parentElement;
+        parent.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+        element.classList.add('selected');
+        element.querySelector('input').checked = true;
+        userAnswers[`q${currentQuizIndex}_${qIndex}`] = oIndex;
+    }
+
+    function submitQuiz() {
+        const quiz = quizzes[currentQuizIndex];
+        let score = 0;
+        const total = quiz.questions.length;
+
+        quiz.questions.forEach((q, qIndex) => {
+            const savedAns = userAnswers[`q${currentQuizIndex}_${qIndex}`];
+            
+            q.options.forEach((_, oIndex) => {
+                const label = document.getElementById(`label-${currentQuizIndex}-${qIndex}-${oIndex}`);
+                label.classList.remove('correct', 'incorrect');
+            });
+
+            document.getElementById(`label-${currentQuizIndex}-${qIndex}-${q.answer}`).classList.add('correct');
+
+            if (savedAns !== undefined) {
+                if (savedAns === q.answer) {
+                    score++;
+                } else {
+                    document.getElementById(`label-${currentQuizIndex}-${qIndex}-${savedAns}`).classList.add('incorrect');
+                }
+            }
+
+            const expBox = document.getElementById(`exp-${currentQuizIndex}-${qIndex}`);
+            setTimeout(() => expBox.classList.add('show'), 100 + (qIndex * 50));
+        });
+
+        submittedQuizzes[currentQuizIndex] = true;
+
+        const resultBox = document.getElementById('result-box');
+        const scoreDisplay = document.getElementById('score-display');
+        const resultMsg = document.getElementById('result-msg');
+
+        resultBox.style.display = 'block';
+        scoreDisplay.innerText = `${score} / ${total}`;
+        
+        if (score >= total * 0.8) {
+            resultBox.className = 'result-box correct';
+            resultMsg.innerText = translations[currentLang].resultCorrect;
+        } else {
+            resultBox.className = 'result-box incorrect';
+            resultMsg.innerText = translations[currentLang].resultIncorrect;
+        }
+        
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    renderQuiz();
+</script>
+</body>
+</html>
